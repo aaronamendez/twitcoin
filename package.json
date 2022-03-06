@@ -11,7 +11,7 @@
     "url": "git+https://github.com/aaronamendez/twitcoin-api.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Aaron Mendez",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/aaronamendez/twitcoin-api/issues"
@@ -21,9 +21,15 @@
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^7.0.4",
-    "lint-staged": "^12.3.5"
+    "lint-staged": "^12.3.5",
+    "prettier": "2.5.1"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "knex": "^1.0.3",
+    "pg": "^8.7.3"
   }
 }
