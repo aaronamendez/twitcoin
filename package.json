@@ -4,8 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prepare": "husky install",
-    "test": "jest"
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "migrate:dev": "knex migrate:latest",
+    "rollback:dev": "knex migrate:rollback",
+    "seeds:dev": "knex seed:run",
+    "migrate:prod": "heroku run knex migrate:latest -a YOUR_HEROKU_APP_NAME",
+    "rollback:prod": "heroku run knex migrate:rollback -a YOUR_HEROKU_APP_NAME",
+    "database:prod": "heroku pg:psql -a YOUR_HEROKU_APP_NAME",
+    "seed:prod": "heroku run knex seed:run -a YOUR_HEROKU_APP_NAME",
+    "test": "cross-env NODE_ENV=testing jest --verbose --runInBand",
+    "deploy": "git push heroku main",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -31,8 +41,10 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "helmet": "^5.0.2",
     "knex": "^1.0.3",
     "pg": "^8.7.3"
   }
