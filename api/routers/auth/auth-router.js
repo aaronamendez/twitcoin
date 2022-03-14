@@ -40,7 +40,7 @@ authRouter.post(
             Users.createNewUser(newUser).then((user) => {
                 const token = generateToken(user);
                 res.status(200).json({
-                    message: `Welcome ${user.username} ...`,
+                    message: `Welcome ${user.username}!`,
                     token,
                 });
             });
@@ -57,7 +57,39 @@ authRouter.post("/login", validateLoginBody, async (req, res) => {
     try {
         Users.findByUsername(req.user.usernameOrEmail).then(
             (userWithUsername) => {
-                if (userWithUsername) {
+                if (!userWithUsername) {
+                    Users.findByEmail(req.user.usernameOrEmail).then(
+                        (userWithEmail) => {
+                            if (userWithEmail) {
+                                // Authenticate
+                                if (
+                                    bcrypt.compareSync(
+                                        req.user.password,
+                                        userWithEmail.password
+                                    )
+                                ) {
+                                    let payload = {
+                                        user_id: userWithEmail.user_id,
+                                        username: userWithEmail.username,
+                                    };
+                                    let token = generateToken(payload);
+                                    res.status(200).json({
+                                        message: `Welcome back ${userWithEmail.username}!`,
+                                        token,
+                                    });
+                                } else {
+                                    res.json({
+                                        message: "Invalid Credentials",
+                                    });
+                                }
+                            } else {
+                                res.status(404).json({
+                                    message: "Invalid Credentials",
+                                });
+                            }
+                        }
+                    );
+                } else {
                     // Authenticate
                     if (
                         bcrypt.compareSync(
@@ -65,25 +97,20 @@ authRouter.post("/login", validateLoginBody, async (req, res) => {
                             userWithUsername.password
                         )
                     ) {
-                        res.json(userWithUsername);
+                        let payload = {
+                            user_id: userWithUsername.user_id,
+                            username: userWithUsername.username,
+                        };
+                        let token = generateToken(payload);
+                        res.status(200).json({
+                            message: `Welcome back ${userWithUsername.username}!`,
+                            token,
+                        });
                     } else {
                         res.json({
-                            message: "Invalid Credentiddals",
+                            message: "Invalid Credentials",
                         });
                     }
-                } else {
-                    Users.findByEmail(req.user.usernameOrEmail).then(
-                        (userWithEmail) => {
-                            if (userWithEmail) {
-                                // Authenticate
-                                res.json("User with Email found!");
-                            } else {
-                                res.status(404).json({
-                                    message: "Invalid Credentiddals",
-                                });
-                            }
-                        }
-                    );
                 }
             }
         );

@@ -10,7 +10,7 @@ const findByUsername = async (username) => {
 const findByEmail = async (email) => {
     let result = await db("users")
         .where("email", email)
-        .select("user_id", "username");
+        .select("user_id", "username", "password");
     return result[0];
 };
 
