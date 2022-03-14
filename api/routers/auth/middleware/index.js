@@ -10,7 +10,7 @@ const validateRegisterBody = (req, res, next) => {
     }
 };
 
-const userExists = (req, res, next) => {
+const usernameExists = (req, res, next) => {
     const { username } = req.body;
     Users.findByUsername(username)
         .then((user) => {
@@ -25,10 +25,26 @@ const userExists = (req, res, next) => {
         });
 };
 
+const emailExists = (req, res, next) => {
+    const { email } = req.body;
+    Users.findByEmail(email)
+        .then((user) => {
+            if (user.length > 0) {
+                res.status(400).json("A User with that Email already exists!");
+            } else {
+                next();
+            }
+        })
+        .catch(() => {
+            res.json("Invalid Credentials");
+        });
+};
+
 const validateLoginBody = (req, res, next) => {};
 
 module.exports = {
-    userExists,
+    usernameExists,
+    emailExists,
     validateRegisterBody,
     validateLoginBody,
 };

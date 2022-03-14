@@ -17,27 +17,34 @@ const Users = require("./models/");
 const {
     validateRegisterBody,
     validateLoginBody,
-    userExists,
+    usernameExists,
+    emailExists,
 } = require("./middleware");
 
-authRouter.post("/register", validateRegisterBody, userExists, (req, res) => {
-    const hashedPassword = bcrypt.hashSync(
-        req.user.password,
-        SALT_ROUNDS_FOR_BCRYPT
-    );
-    const newUser = {
-        username: req.user.username,
-        email: req.user.email,
-        password: hashedPassword,
-    };
-    Users.createNewUser(newUser).then((user) => {
-        const token = generateToken(user);
-        res.status(200).json({
-            message: `Welcome ${user.username} ...`,
-            token,
+authRouter.post(
+    "/register",
+    validateRegisterBody,
+    usernameExists,
+    emailExists,
+    (req, res) => {
+        const hashedPassword = bcrypt.hashSync(
+            req.user.password,
+            SALT_ROUNDS_FOR_BCRYPT
+        );
+        const newUser = {
+            username: req.user.username,
+            email: req.user.email,
+            password: hashedPassword,
+        };
+        Users.createNewUser(newUser).then((user) => {
+            const token = generateToken(user);
+            res.status(200).json({
+                message: `Welcome ${user.username} ...`,
+                token,
+            });
         });
-    });
-});
+    }
+);
 
 function generateToken(user) {
     const payload = {

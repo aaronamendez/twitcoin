@@ -5,6 +5,11 @@ const findByUsername = async (username) => {
     return result;
 };
 
+const findByEmail = async (email) => {
+    let result = await db("users").where("email", email);
+    return result;
+};
+
 const findById = async (id) => {
     let result = await db("users").where("user_id", id);
     return result;
@@ -18,6 +23,7 @@ const createNewUser = async (user) => {
 
 module.exports = {
     findByUsername,
+    findByEmail,
     findById,
     createNewUser,
 };
