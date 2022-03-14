@@ -25,7 +25,7 @@ const usernameExists = async (req, res, next) => {
         const { username } = req.body;
         Users.findByUsername(username)
             .then((user) => {
-                if (user.length > 0) {
+                if (user) {
                     res.status(400).json("Username Taken");
                 } else {
                     next();
@@ -44,7 +44,7 @@ const emailExists = async (req, res, next) => {
         const { email } = req.body;
         Users.findByEmail(email)
             .then((user) => {
-                if (user.length > 0) {
+                if (user) {
                     res.status(400).json(
                         "A User with that Email already exists!"
                     );

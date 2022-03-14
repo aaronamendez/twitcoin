@@ -55,21 +55,31 @@ authRouter.post(
 
 authRouter.post("/login", validateLoginBody, async (req, res) => {
     try {
-        // res.json(req.user);
         Users.findByUsername(req.user.usernameOrEmail).then(
             (userWithUsername) => {
-                if (userWithUsername.length > 0) {
+                if (userWithUsername) {
                     // Authenticate
-                    res.json("User with Username found!");
+                    if (
+                        bcrypt.compareSync(
+                            req.user.password,
+                            userWithUsername.password
+                        )
+                    ) {
+                        res.json(userWithUsername);
+                    } else {
+                        res.json({
+                            message: "Invalid Credentiddals",
+                        });
+                    }
                 } else {
                     Users.findByEmail(req.user.usernameOrEmail).then(
                         (userWithEmail) => {
-                            if (userWithEmail.length > 0) {
+                            if (userWithEmail) {
                                 // Authenticate
                                 res.json("User with Email found!");
                             } else {
                                 res.status(404).json({
-                                    message: "Invalid Credentials",
+                                    message: "Invalid Credentiddals",
                                 });
                             }
                         }
