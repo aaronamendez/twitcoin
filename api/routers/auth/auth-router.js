@@ -55,7 +55,28 @@ authRouter.post(
 
 authRouter.post("/login", validateLoginBody, async (req, res) => {
     try {
-        res.json("Ok!");
+        // res.json(req.user);
+        Users.findByUsername(req.user.usernameOrEmail).then(
+            (userWithUsername) => {
+                if (userWithUsername.length > 0) {
+                    // Authenticate
+                    res.json("User with Username found!");
+                } else {
+                    Users.findByEmail(req.user.usernameOrEmail).then(
+                        (userWithEmail) => {
+                            if (userWithEmail.length > 0) {
+                                // Authenticate
+                                res.json("User with Email found!");
+                            } else {
+                                res.status(404).json({
+                                    message: "Invalid Credentials",
+                                });
+                            }
+                        }
+                    );
+                }
+            }
+        );
     } catch (err) {
         res.status(500).json({ error: err, message: "Internal Server Error" });
     }
