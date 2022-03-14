@@ -12,7 +12,7 @@ const findById = async (id) => {
 
 // Email needs to be unique
 const createNewUser = async (user) => {
-    let result = await db("users").insert(user, ["*"]);
+    let result = await db("users").insert(user, ["user_id", "username"]);
     return result[0];
 };
 
