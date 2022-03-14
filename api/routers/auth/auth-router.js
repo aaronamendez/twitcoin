@@ -5,15 +5,14 @@ const jwt = require("jsonwebtoken");
 
 // Middlewares
 const {
-  validateRegisterBody,
-  validateLoginBody,
-  userExists,
+    validateRegisterBody,
+    validateLoginBody,
+    userExists,
 } = require("./middleware");
 
 authRouter.post("/register", validateRegisterBody, userExists, (req, res) => {
-  const { username, email, password } = req.body;
-
-  res.json(req.user);
+    const salt = "";
+    const hashedPassword = bcrypt.hashSync(req.user.password, salt);
 });
 
 module.exports = authRouter;
