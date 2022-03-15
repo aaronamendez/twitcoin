@@ -23,17 +23,13 @@ const validateLoginBody = (req, res, next) => {
 const usernameExists = async (req, res, next) => {
     try {
         const { username } = req.body;
-        Users.findByUsername(username)
-            .then((user) => {
-                if (user) {
-                    res.status(400).json("Username Taken");
-                } else {
-                    next();
-                }
-            })
-            .catch(() => {
-                res.json("Invalid Credentials");
-            });
+        Users.findByUsername(username).then((user) => {
+            if (user) {
+                res.status(400).json("Username Taken");
+            } else {
+                next();
+            }
+        });
     } catch (err) {
         res.status(500).json({ error: err, message: "Internal Server Error" });
     }
@@ -42,19 +38,13 @@ const usernameExists = async (req, res, next) => {
 const emailExists = async (req, res, next) => {
     try {
         const { email } = req.body;
-        Users.findByEmail(email)
-            .then((user) => {
-                if (user) {
-                    res.status(400).json(
-                        "A User with that Email already exists!"
-                    );
-                } else {
-                    next();
-                }
-            })
-            .catch(() => {
-                res.json("Invalid Credentials");
-            });
+        Users.findByEmail(email).then((user) => {
+            if (user) {
+                res.status(400).json("A User with that Email already exists!");
+            } else {
+                next();
+            }
+        });
     } catch (err) {
         res.status(500).json({ error: err, message: "Internal Server Error" });
     }

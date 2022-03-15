@@ -38,8 +38,9 @@ authRouter.post(
                 password: hashedPassword,
             };
             Users.createNewUser(newUser).then((user) => {
+                // res.json(user);
                 const token = generateToken(user);
-                res.status(200).json({
+                res.status(201).json({
                     message: `Welcome ${user.username}!`,
                     token,
                 });
@@ -78,12 +79,12 @@ authRouter.post("/login", validateLoginBody, async (req, res) => {
                                         token,
                                     });
                                 } else {
-                                    res.json({
+                                    res.status(400).json({
                                         message: "Invalid Credentials",
                                     });
                                 }
                             } else {
-                                res.status(404).json({
+                                res.status(400).json({
                                     message: "Invalid Credentials",
                                 });
                             }
@@ -107,8 +108,8 @@ authRouter.post("/login", validateLoginBody, async (req, res) => {
                             token,
                         });
                     } else {
-                        res.json({
-                            message: "Invalid Credentials",
+                        res.status(400).json({
+                            message: "Password is wrong!",
                         });
                     }
                 }
