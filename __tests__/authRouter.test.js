@@ -31,6 +31,27 @@ describe("Register Auth Tests", () => {
             .send(user);
         expect(result.status).toBe(201);
     });
+
+    test("test for username and email to be unique", async () => {
+        let user = {
+            username: "foo",
+            email: "foo@gmail.com",
+            password: "foobar123",
+        };
+        let result = await request(server)
+            .post("/api/auth/register")
+            .send(user);
+        expect(result.status).toBe(201);
+        let user2 = {
+            username: "foo",
+            email: "foo@gmail.com",
+            password: "foobar123",
+        };
+        let result2 = await request(server)
+            .post("/api/auth/register")
+            .send(user2);
+        expect(result2.status).toBe(400);
+    });
 });
 
 describe("Login Auth Tests", () => {
