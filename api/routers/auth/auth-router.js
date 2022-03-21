@@ -20,6 +20,7 @@ const {
     usernameExists,
     emailExists,
 } = require("./middleware");
+const { restricted } = require("./middleware/restricted");
 
 authRouter.post(
     "/register",
@@ -104,7 +105,7 @@ authRouter.post("/login", validateLoginBody, async (req, res) => {
                         };
                         let token = generateToken(payload);
                         res.status(200).json({
-                            message: `Welcome back ${userWithUsername.username}!`,
+                            message: `Welcome back ${userWithUsername.username} 👋!`,
                             token,
                         });
                     } else {
@@ -122,10 +123,14 @@ authRouter.post("/login", validateLoginBody, async (req, res) => {
 
 function generateToken(user) {
     const payload = {
-        subject: user.user_id,
+        id: user.user_id,
         username: user.username,
     };
     return jwt.sign(payload, JWT_SECRET, { expiresIn: "1d" });
 }
+
+authRouter.get("/test", restricted, (req, res) => {
+    res.json({ message: "Authorized", user: req.user });
+});
 
 module.exports = authRouter;

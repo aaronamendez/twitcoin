@@ -13,7 +13,8 @@ const validateRegisterBody = (req, res, next) => {
 const validateLoginBody = (req, res, next) => {
     const { usernameOrEmail, password } = req.body;
     if (!usernameOrEmail || !password) {
-        res.status(400).json({ message: "All Fields Are Required" });
+        console.log(req.body);
+        res.status(400).json({ message: "All Fields Are Requiddred" });
     } else {
         req.user = req.body;
         next();
