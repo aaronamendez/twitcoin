@@ -20,7 +20,7 @@ const {
     usernameExists,
     emailExists,
 } = require("./middleware");
-const { restricted } = require("./middleware/restricted");
+const { restricted } = require("../restricted");
 
 authRouter.post(
     "/register",
