@@ -1,4 +1,4 @@
-const db = require("./../../../../configs/database");
+const db = require("../../../../configs/database");
 
 const findByUsername = async (username) => {
     let result = await db("users")
