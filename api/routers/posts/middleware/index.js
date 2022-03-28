@@ -1,3 +1,5 @@
+const Posts = require("../models");
+
 const validatePostBody = (req, res, next) => {
     const { postBody } = req.body;
 
@@ -9,6 +11,19 @@ const validatePostBody = (req, res, next) => {
     }
 };
 
+const checkPostExists = async (req, res, next) => {
+    const { id } = req.params;
+    Posts.findPostById(id).then((post) => {
+        if (!post) {
+            res.status(404).json({ message: "That post does not exist" });
+        } else {
+            req.postId = id;
+            next();
+        }
+    });
+};
+
 module.exports = {
     validatePostBody,
+    checkPostExists,
 };

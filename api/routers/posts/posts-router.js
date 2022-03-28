@@ -1,7 +1,7 @@
 const express = require("express");
 const postRouter = express.Router();
 
-const { validatePostBody } = require("./middleware");
+const { validatePostBody, checkPostExists } = require("./middleware");
 
 const { restricted } = require("../restricted");
 
@@ -30,6 +30,10 @@ postRouter.post("/", restricted, validatePostBody, (req, res) => {
         .catch((err) => {
             res.status(500).json({ message: "Internal Server Error" });
         });
+});
+
+postRouter.delete("/:id", checkPostExists, (req, res) => {
+    res.json("Ok!");
 });
 
 module.exports = postRouter;
