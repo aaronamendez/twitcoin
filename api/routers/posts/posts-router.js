@@ -1,7 +1,11 @@
 const express = require("express");
 const postRouter = express.Router();
 
-const { validatePostBody, checkPostExists } = require("./middleware");
+const {
+    validatePostBody,
+    checkIfAuthor,
+    checkPostExists,
+} = require("./middleware");
 
 const { restricted } = require("../restricted");
 
@@ -32,11 +36,17 @@ postRouter.post("/", restricted, validatePostBody, (req, res) => {
         });
 });
 
-postRouter.delete("/:id", checkPostExists, (req, res) => {
-    Posts.deletePost(req.postId).then((deletedPost) => {
-        // We may want to return ALL posts after actually
-        res.status(200).json(deletedPost);
-    });
-});
+postRouter.delete(
+    "/:id",
+    restricted,
+    checkIfAuthor,
+    checkPostExists,
+    (req, res) => {
+        Posts.deletePost(req.postId).then((deletedPost) => {
+            // We may want to return ALL posts after actually
+            res.status(200).json(deletedPost);
+        });
+    }
+);
 
 module.exports = postRouter;

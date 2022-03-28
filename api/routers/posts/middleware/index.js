@@ -23,7 +23,25 @@ const checkPostExists = async (req, res, next) => {
     });
 };
 
+const checkIfAuthor = async (req, res, next) => {
+    const { id } = req.params;
+    Posts.findPostById(id).then((post) => {
+        if (!post) {
+            res.status(404).json({ message: "That post does not exist!" });
+        } else {
+            if (post.user_id === req.user.id) {
+                next();
+            } else {
+                res.status(401).json({
+                    message: "You are not the original author of this post",
+                });
+            }
+        }
+    });
+};
+
 module.exports = {
     validatePostBody,
     checkPostExists,
+    checkIfAuthor,
 };
