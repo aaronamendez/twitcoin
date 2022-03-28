@@ -13,6 +13,7 @@ const Posts = require("./models/index");
 
 postRouter.get("/", restricted, (req, res) => {
     Posts.findAllPosts().then((posts) => {
+        posts.reverse();
         res.json(posts);
     });
 });
