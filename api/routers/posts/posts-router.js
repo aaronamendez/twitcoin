@@ -33,7 +33,10 @@ postRouter.post("/", restricted, validatePostBody, (req, res) => {
 });
 
 postRouter.delete("/:id", checkPostExists, (req, res) => {
-    res.json("Ok!");
+    Posts.deletePost(req.postId).then((deletedPost) => {
+        // We may want to return ALL posts after actually
+        res.status(200).json(deletedPost);
+    });
 });
 
 module.exports = postRouter;

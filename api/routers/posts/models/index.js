@@ -21,7 +21,7 @@ const createNewPost = async (body) => {
 };
 
 const deletePost = async (id) => {
-    let result = await db("post").where("post_id", id).del();
+    let result = await db("posts").where("post_id", id).del().returning("*");
 
     return result[0];
 };
