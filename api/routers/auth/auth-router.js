@@ -126,7 +126,7 @@ function generateToken(user) {
         id: user.user_id,
         username: user.username,
     };
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: "1d" });
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: "3d" });
 }
 
 authRouter.get("/test", restricted, (req, res) => {
