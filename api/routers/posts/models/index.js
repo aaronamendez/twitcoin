@@ -1,7 +1,9 @@
 const db = require("../../../../configs/database");
 
 const findAllPosts = async () => {
-    let result = db("posts");
+    let result = db("posts")
+        .innerJoin("users", "posts.user_id", "users.user_id")
+        .select("post_body", "post_id", "username");
     return result;
 };
 
