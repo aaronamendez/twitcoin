@@ -12,6 +12,10 @@ lerna-debug.log*
 
 things.todo
 
+# httpie
+
+request.httpie
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 
 report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
