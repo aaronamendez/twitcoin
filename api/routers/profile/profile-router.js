@@ -3,7 +3,7 @@ const profileRouter = express.Router();
 
 const Profile = require("./models");
 
-const { checkIfUser, sameUser } = require("./middleware");
+const { checkIfUser, updateUser } = require("./middleware");
 const { restricted } = require("../restricted");
 
 profileRouter.get("/:username", restricted, checkIfUser, async (req, res) => {
@@ -14,7 +14,7 @@ profileRouter.get("/:username", restricted, checkIfUser, async (req, res) => {
     }
 });
 
-profileRouter.put("/:username", restricted, sameUser, async (req, res) => {
+profileRouter.put("/:username", restricted, updateUser, async (req, res) => {
     try {
         res.status(200).json(req.profile);
     } catch (err) {
