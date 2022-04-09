@@ -1,7 +1,7 @@
 const express = require("express");
 const profileRouter = express.Router();
 
-const Profile = require("./models");
+// const Profile = require("./models");
 
 const { checkIfUser, updateUser } = require("./middleware");
 const { restricted } = require("../restricted");
