@@ -14,11 +14,4 @@ profileRouter.get("/:username", restricted, checkIfUser, async (req, res) => {
     }
 });
 
-// testing purposes only
-// profileRouter.post("/", (req, res) => {
-//     Profile.findFollowersCount(1).then((follows) => {
-//         res.json(follows);
-//     });
-// });
-
 module.exports = profileRouter;
