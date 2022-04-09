@@ -1,6 +1,11 @@
 const db = require("../../../../configs/database");
 
-const userExists = async (username) => {
+const findUserById = async (id) => {
+    let [result] = await db("users").where("user_id", id);
+    return result;
+};
+
+const findByUsername = async (username) => {
     let result = await db("users").where("username", username);
     return result[0];
 };
@@ -17,7 +22,19 @@ const getUserProfile = async (username) => {
     return { ...userResult, ...followerCount, ...followingCount };
 };
 
+const updateUserProfile = async (id, body) => {
+    let result = await db("users").where("user_id", id).update({
+        bio: body.bio,
+        location: body.location,
+        website: body.website,
+    });
+
+    return result;
+};
+
 module.exports = {
-    userExists,
+    findUserById,
+    findByUsername,
     getUserProfile,
+    updateUserProfile,
 };
