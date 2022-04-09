@@ -15,8 +15,9 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-    return knex.schema
-        .dropTableIfExists("follows")
-        .dropTableIfExists("posts")
-        .dropTableIfExists("users");
+    return knex.schema.table("users", (tbl) => {
+        tbl.dropColumn("bio");
+        tbl.dropColumn("location");
+        tbl.dropColumn("website");
+    });
 };
