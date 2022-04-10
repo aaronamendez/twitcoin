@@ -1,5 +1,21 @@
 const Profile = require("../models");
 
+const getMyProfile = async (req, res, next) => {
+    Profile.getUserProfile(req.user.username).then((user) => {
+        if (!user) {
+            res.status(404).json({
+                message:
+                    "Your user doesn't exist anymore, or your token is invalid. Re-login.",
+            });
+        } else {
+            delete user.password;
+            user.isUser = true;
+            req.profile = user;
+            next();
+        }
+    });
+};
+
 const checkIfUser = async (req, res, next) => {
     try {
         const { username } = req.params;
@@ -66,6 +82,7 @@ const updateUser = async (req, res, next) => {
 };
 
 module.exports = {
+    getMyProfile,
     checkIfUser,
     updateUser,
 };
