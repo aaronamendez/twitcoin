@@ -66,7 +66,7 @@ const updateUser = async (req, res, next) => {
                     };
                     Profile.updateUserProfile(checkUser.user_id, obj).then(
                         (updated) => {
-                            Profile.findByUsername(username).then((user) => {
+                            Profile.getUserProfile(username).then((user) => {
                                 delete user.password;
                                 req.profile = user;
                                 next();
